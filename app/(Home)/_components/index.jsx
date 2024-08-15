@@ -101,7 +101,7 @@ const MainContent = () => {
             <span className="block text-sm font-normal" >
               Hold your face in front of the camera for facial authentication.
             </span>
-            <div onClick={authenticateUser} className="p-3 hover:opacity-[.6] cursor-pointer px-4 rounded-sm text-base text-center font-semibold text-[#fff] bg-[#000]">
+            <div onClick={AuthenticateUser} className="p-3 hover:opacity-[.6] cursor-pointer px-4 rounded-sm text-base text-center font-semibold text-[#fff] bg-[#000]">
               Take Photo
             </div>
           </div>
