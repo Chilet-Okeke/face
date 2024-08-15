@@ -2,8 +2,22 @@
 import faceIO from "@faceio/fiojs";
 import { Camera, Lock } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import React, { useEffect, useState } from "react";
 const HomeIndex = () => {
+  const router = useRouter();
+
+  let userinfo;
+  if (typeof window !== "undefined") {
+    userinfo = localStorage.getItem("userinfo")
+  }
+  // console.log(userinfo)
+  useEffect(() => {
+    if (userinfo === null) {
+      router.push('/')
+    }
+  }, [userinfo])
   return (
     <div className="w-full">
       <Navbar />
@@ -55,6 +69,7 @@ const Navbar = () => {
 const MainContent = () => {
   const [isauthenticated, setIsAuthenticated] = useState(false)
   const faceio = new faceIO(process.env.NEXT_PUBLIC_KEY);
+  
 
   const AuthenticateUser = async () => {
     try {
@@ -71,7 +86,7 @@ const MainContent = () => {
     }
   };
   return (
-    <div className="w-full min-h-[100vh] items-center justify-center py-6 flex flex-col gap-4">
+    <div className="w-full min-h-[100vh] py-40 items-center justify-center flex flex-col gap-4">
       <div className="w-[90%] rounded-2xl md:w-[500px] mx-auto border p-8 flex flex-col gap-8 ">
         <span className="text-3xl font-bold gap-3 text-[#000]">
           Verify Your Identity
@@ -112,52 +127,52 @@ const MainContent = () => {
       {/* check if the user has been authenticated */}
       {
         isauthenticated && <div className="w-[90%] rounded-2xl md:w-[500px] mx-auto border p-8 flex flex-col gap-8 ">
-        <span className="text-3xl font-bold gap-3 text-[#000]">
-          Community Voting
-          <span className="block font-normal text-base text-grey">
-            Review the projects and cast your secure vote.
+          <span className="text-3xl font-bold gap-3 text-[#000]">
+            Community Voting
+            <span className="block font-normal text-base text-grey">
+              Review the projects and cast your secure vote.
+            </span>
           </span>
-        </span>
-        <div className="flex flex-col gap-4">
-          <div className="text-base flex items-center justify-between gap-4 font-semibold">
-            <span className="block text-base font-bold">
-              Upgrade Community Center
-              <span className="block text-sm font-normal">
-                Renovate and expand the community center.
+          <div className="flex flex-col gap-4">
+            <div className="text-base flex items-center justify-between gap-4 font-semibold">
+              <span className="block text-base font-bold">
+                Upgrade Community Center
+                <span className="block text-sm font-normal">
+                  Renovate and expand the community center.
+                </span>
               </span>
-            </span>
-            <div className="p-2 hover:opacity-[.78] cursor-pointer px-4 rounded-sm text-base text-center font-semibold border">
-              Vote
+              <div className="p-2 hover:opacity-[.78] cursor-pointer px-4 rounded-sm text-base text-center font-semibold border">
+                Vote
+              </div>
             </div>
-          </div>
 
-          <div className="text-base flex items-center justify-between gap-4 font-semibold">
-            <span className="block text-base font-bold">
-              Upgrade Community CenterInstall Solar Panels{" "}
-              <span className="block text-sm font-normal">
-                Implement a solar energy system for the community.
+            <div className="text-base flex items-center justify-between gap-4 font-semibold">
+              <span className="block text-base font-bold">
+                Upgrade Community CenterInstall Solar Panels{" "}
+                <span className="block text-sm font-normal">
+                  Implement a solar energy system for the community.
+                </span>
               </span>
-            </span>
-            <div className="p-2 hover:opacity-[.78] cursor-pointer px-4 rounded-sm text-base text-center font-semibold border">
-              Vote
+              <div className="p-2 hover:opacity-[.78] cursor-pointer px-4 rounded-sm text-base text-center font-semibold border">
+                Vote
+              </div>
             </div>
-          </div>
 
-          <div className="text-base flex items-center justify-between gap-4 font-semibold">
-            <span className="block text-base font-bold">
-              Improve Local Park
-              <span className="block text-sm font-normal">
-                Renovate and expand the community park.
+            <div className="text-base flex items-center justify-between gap-4 font-semibold">
+              <span className="block text-base font-bold">
+                Improve Local Park
+                <span className="block text-sm font-normal">
+                  Renovate and expand the community park.
+                </span>
               </span>
-            </span>
-            <div className="p-2 hover:opacity-[.78] cursor-pointer px-4 rounded-sm text-base text-center font-semibold border">
-              Vote
+              <div className="p-2 hover:opacity-[.78] cursor-pointer px-4 rounded-sm text-base text-center font-semibold border">
+                Vote
+              </div>
             </div>
           </div>
         </div>
-      </div>
       }
-      
+
     </div>
   );
 };

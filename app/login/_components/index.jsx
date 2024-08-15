@@ -8,16 +8,16 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 let LoginFormInputData = [
   {
-    name:"email",
-    type:"email",
-    label:"Email",
-    placeholder:"Enter your Email",
+    name: "email",
+    type: "email",
+    label: "Email",
+    placeholder: "Enter your Email",
   },
   {
-    name:"pin",
-    type:"password",
-    label:"Password",
-    placeholder:"Enter your Password"
+    name: "pin",
+    type: "password",
+    label: "Password",
+    placeholder: "Enter your Password"
   }
 ]
 const HomeIndex = () => {
@@ -65,9 +65,9 @@ const MainContent = () => {
   // console.log(process.env.NEXT_PUBLIC_FACE_IO_ID)
   const faceio = new faceIO(process.env.NEXT_PUBLIC_KEY);
   // console.log(faceio);
-  const [payload, setPayload] = useState({ userEmail: "", pin: "" });
+  const [payload, setPayload] = useState({ email: "", pin: "" });
   const [isSigningUp, setIsSigningUp] = useState(false); // New state variable
-
+  // console.log(payload)
   const onChange = (e) => {
     setPayload({ ...payload, [e.target.name]: e.target.value });
   };
@@ -87,18 +87,12 @@ const MainContent = () => {
         token: "fioaf212",
 
         payload: {
-          email: payload.userEmail,
+          email: payload.emainl,
           pin: payload.pin,
         },
       });
-      alert(
-        `User Successfully Enrolled! Details:
-        Unique Facial ID: ${userInfo?.facialId}
-        Enrollment Date: ${userInfo?.timestamp}
-        Gender: ${userInfo?.details?.gender}
-        Age Approximation: ${userInfo?.details?.age}`
-      );
-      localStorage.setItem("faceId", userInfo?.facialId);
+
+      localStorage.setItem("userinfo", JSON.stringify(userInfo));
       if (userInfo) {
         router.push("/");
       }
@@ -111,12 +105,23 @@ const MainContent = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!payload?.userEmail && !payload?.pin) {
+    if (!payload?.emainl && !payload?.pin) {
       toast.error("Please fill in the user crendentials");
     } else {
       registerNewUser();
     }
   };
+
+  let userinfo;
+  if (typeof window !== "undefined") {
+    userinfo = localStorage.getItem("userinfo")
+  }
+  // console.log(userinfo)
+  useEffect(() => {
+    if (userinfo !== null) {
+      router.push('/')
+    }
+  }, [userinfo])
   return (
     <div className="w-full min-h-[100vh] items-center justify-center py-24 flex flex-col gap-4">
       <div className="w-[90%] rounded-2xl md:w-[500px] mx-auto border py-12 px-8 flex flex-col gap-8 ">
@@ -164,22 +169,4 @@ const MainContent = () => {
   );
 };
 
-const Footer = () => {
-  const navbarlist = ["About", "Contact"];
-
-  return (
-    <div className="w-full sticky bottom-0 py-3 bg-[#000] flex">
-      <div className="w-full px-8 flex items-center justify-between">
-        <span className="text-sm font-normal flex items-center gap-3 text-white">
-          © 2024 Secure Voting. All rights reserved.
-        </span>
-        <div className="flex items-center gap-8 justify-end">
-          <div className="text-sm font-semibold text-[#fff] ">
-            Powered by Vercel
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 export default HomeIndex;
