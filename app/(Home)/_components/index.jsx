@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <div className="w-full sticky top-0 py-6 bg-[#000] flex">
       <div className="w-full px-8 flex items-center justify-between">
-        <span className="text-2xl font-bold flex items-center gap-3 text-white">
+        <span className="text-lg md:text-2xl font-bold flex items-center gap-3 text-white">
           <Lock />
           Secure Voting
         </span>
@@ -58,7 +58,7 @@ const Navbar = () => {
               Sign Up
             </Link>
 
-            <Link href={'/login'} className="p-2 px-4 rounded-sm text-base font-normal hover:text-[#000] text-[#fff] cursor-pointer hover:bg-[#f7f7f7]">
+            <Link href={'/login'} className="p-2 px-4 rounded-sm md:flex hidden text-base font-normal hover:text-[#000] text-[#fff] cursor-pointer hover:bg-[#f7f7f7]">
               Sign In
             </Link>
           </div>
