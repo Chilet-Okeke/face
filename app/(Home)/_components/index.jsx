@@ -10,14 +10,16 @@ const HomeIndex = () => {
 
   let userinfo;
   if (typeof window !== "undefined") {
-    userinfo = localStorage.getItem("userinfo")
+    userinfo = JSON.parse(localStorage.getItem("userinfo"))
   }
-  // console.log(userinfo)
+  console.log(userinfo)
   useEffect(() => {
-    if (userinfo === null) {
+    if (!userinfo) {
       router.push('/')
     }
-  }, [userinfo])
+  }, [userinfo,router])
+  // console.log(userinfo)
+
   return (
     <div className="w-full">
       <Navbar />
@@ -52,13 +54,13 @@ const Navbar = () => {
             })}
           </div>
           <div className="flex items-center gap-6">
-            <div className="p-2 px-4 rounded-sm text-base font-normal text-dark bg-[#f7f7f7]">
+            <Link href={'/register'} className="p-2 px-4 rounded-sm text-base font-normal text-dark bg-[#f7f7f7]">
               Sign Up
-            </div>
+            </Link>
 
-            <div className="p-2 px-4 rounded-sm text-base font-normal hover:text-[#000] text-[#fff] cursor-pointer hover:bg-[#f7f7f7]">
+            <Link href={'/login'} className="p-2 px-4 rounded-sm text-base font-normal hover:text-[#000] text-[#fff] cursor-pointer hover:bg-[#f7f7f7]">
               Sign In
-            </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -69,22 +71,28 @@ const Navbar = () => {
 const MainContent = () => {
   const [isauthenticated, setIsAuthenticated] = useState(false)
   const faceio = new faceIO(process.env.NEXT_PUBLIC_KEY);
-  
+  const [age, setAge] = useState(null);
+
+  let userinfo = null;
+  if (typeof window !== "undefined") {
+    userinfo = JSON.parse(localStorage.getItem("userinfo"))
+  }
 
   const AuthenticateUser = async () => {
     try {
       const userData = await faceio.authenticate({
         locale: "auto",
       });
-      console.log("Success, user identified");
-      console.log("Linked facial Id: " + userData.facialId);
-      console.log("Payload: " + JSON.stringify(userData.payload));
-      localStorage.setItem("faceId", userData.facialId); // Store face ID in local storage
-      // router.push("");
+      if (userData?.details?.age === age) {
+        setIsAuthenticated(true)
+      }
+
+      localStorage.setItem("userinfo", JSON.stringify(userData));
     } catch (error) {
       console.error("Authentication failed:", error);
     }
   };
+  // console.log(userinfo?.details)
   return (
     <div className="w-full min-h-[100vh] py-40 items-center justify-center flex flex-col gap-4">
       <div className="w-[90%] rounded-2xl md:w-[500px] mx-auto border p-8 flex flex-col gap-8 ">
@@ -102,6 +110,9 @@ const MainContent = () => {
             Age
             <input
               type="number"
+              value={age}
+              name="age"
+              onChange={(e) => setAge(e.target.value)}
               className="font-normal px-6 rounded-md w-full h-[50px] border outline-none"
             />
           </label>
@@ -126,7 +137,7 @@ const MainContent = () => {
       {/* community voting */}
       {/* check if the user has been authenticated */}
       {
-        isauthenticated && <div className="w-[90%] rounded-2xl md:w-[500px] mx-auto border p-8 flex flex-col gap-8 ">
+       userinfo?.details?.age >= 18 &&  <div className="w-[90%] rounded-2xl md:w-[500px] mx-auto border p-8 flex flex-col gap-8 ">
           <span className="text-3xl font-bold gap-3 text-[#000]">
             Community Voting
             <span className="block font-normal text-base text-grey">
