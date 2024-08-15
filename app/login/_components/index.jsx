@@ -20,7 +20,7 @@ let LoginFormInputData = [
     placeholder: "Enter your Password"
   }
 ]
-const HomeIndex = () => {
+const Login = () => {
   return (
     <div className="w-full">
       <Navbar />
@@ -169,4 +169,4 @@ const MainContent = () => {
   );
 };
 
-export default HomeIndex;
+export default Login;

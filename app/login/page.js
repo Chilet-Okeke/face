@@ -1,9 +1,9 @@
 import Head from "next/head";
-import HomeIndex from "./_components";
+import Login from "./_components";
 export default async function Root() {
   return (
     <div className="relative">
-      <HomeIndex />
+      <Login />
     </div>
   );
 }
